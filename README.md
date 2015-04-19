@@ -18,7 +18,13 @@ spring-boot-starter-web.
 Le service est défini grâce à l’annotation `@SpringBootApplication`. 
 Le port est précisé dans le fichier `application.yml`.
 
-L’application utilise RestTemplate pour effectuer son appel au service. Elle doit connaître précisément 
-l’uri (dont le port) pour effectuer son appel. 
+L’application utilise RestTemplate pour effectuer son appel au service. 
+
+**Inconvénients:**
+
+L’application doit connaître précisément l’uri (dont le port) pour effectuer son appel. 
+
+Le branchement de l’application directement sur un service en «dur» empêche la mise à jour de celui-ci. 
+
 
  
