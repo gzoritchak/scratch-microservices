@@ -22,7 +22,8 @@ class MyServiceRestController {
         String who = "world";
         String content = "Calling greeter with :: " + who;
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity("http://localhost:8081/greeter/greet/" + who, String.class);
+        ResponseEntity<String> forEntity = restTemplate.getForEntity("http://localhost:8081/greeter/greet/" + who,
+                String.class);
         return content + "<br>" + forEntity.getBody();
     }
 }
