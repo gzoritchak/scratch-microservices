@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableCircuitBreaker
+@EnableFeignClients
 public class MyApp {
 
     public static void main(String args[]) throws Throwable {
@@ -36,15 +40,21 @@ class MyServiceRestController {
 @Component
 class GreeterWithFallback {
 
+    @Autowired GreeterClient greeterClient;
+
     @HystrixCommand(fallbackMethod = "fallbackGreet")
     public String greet(String who) {
-        return new RestTemplate()
-                .getForEntity("http://localhost:8081/greeter/greet/" + who,
-                        String.class).getBody();
+        return greeterClient.greet(who);
     }
 
     public String fallbackGreet(String who){
         return who;
     }
+}
 
+@FeignClient(url = "http://localhost:8081")
+interface GreeterClient {
+
+    @RequestMapping(method = RequestMethod.GET, value = "/greeter/greet/{who}")
+    String  greet(@PathVariable("who") String who);
 }
