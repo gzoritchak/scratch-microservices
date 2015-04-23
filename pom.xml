@@ -8,6 +8,10 @@
     <packaging>pom</packaging>
     <modules>
 
+        <!--infrastructure-->
+
+        <module>eureka</module>
+
         <!-- services -->
         <module>my-app</module>
         <module>my-service</module>

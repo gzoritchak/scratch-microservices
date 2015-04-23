@@ -1,2 +1,14 @@
+spring:
+  application:
+    name: my-app
+
 server:
   port: 8082
+
+eurekaServer: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${eurekaServer}:8761/eureka/
+
