@@ -22,29 +22,28 @@ public class MyApp {
 @RestController
 class MyServiceRestController {
 
-    @Autowired
-    GreeterClient greeterClient;
+    @Autowired GreeterWithFallback greeterWithFallback;
 
     @RequestMapping("/")
     String home() {
         String who = "world";
         return "Calling greeter with :: " + who + "<br>"
-                + greeterClient.greet(who);
+                + greeterWithFallback.greet(who);
     }
 
 }
 
 @Component
-class GreeterClient {
+class GreeterWithFallback {
 
-    @HystrixCommand(fallbackMethod = "defaultGreet")
+    @HystrixCommand(fallbackMethod = "fallbackGreet")
     public String greet(String who) {
         return new RestTemplate()
                 .getForEntity("http://localhost:8081/greeter/greet/" + who,
                         String.class).getBody();
     }
 
-    public String defaultGreet(String who){
+    public String fallbackGreet(String who){
         return who;
     }
 
