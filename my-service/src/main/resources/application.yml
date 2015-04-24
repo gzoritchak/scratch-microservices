@@ -5,10 +5,17 @@ spring:
 server:
   port: 8081
 
-eurekaServer: localhost
+eurekaServer: eureka
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://${eurekaServer}:8761/eureka/
+  instance:
+    preferIpAddress: true
 
+---
+spring:
+  profiles: dev
+
+eurekaServer: localhost
